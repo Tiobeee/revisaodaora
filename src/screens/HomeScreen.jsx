@@ -1,18 +1,27 @@
-import { doc } from 'firebase/firestore';
 import { View } from "react-native";
 import { Paragraph, Surface } from "react-native-paper";
-import styles from "../config/styles";
 import { useEffect } from "react";
-import { collection } from "firebase/firestore";
 import { db } from "../config/firebase";
+import styles from "../config/styles";
+import { collection, getDocs } from "firebase/firestore";
 
 export default function HomeScreen() {
+  useEffect(() => {
+    // aqui
+    const buscaDados = async () => {
+      // aqui eu referencio a coleção usuários dentro de colRef
+      const colRef = collection(db, "usuarios");
+      // buscar todos os resultados de colRef que é a coleção usuários
+      const querySnapshot = await getDocs(colRef); // faz esperar a busca dos dados
+      // para cada documento dentro de querySnapshot, eu imprimo o id e os dados
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+      });
+    };
+    // fecha aqui
+    buscaDados(); // não esqueça de chamar a função
 
-    useEffect(()=>{
-        const colRef = collection(db);
-        const docRef = doc(colRef, 'teste');
-
-    },[]);
+  }, []);
 
   return (
     <Surface style={styles.container}>
